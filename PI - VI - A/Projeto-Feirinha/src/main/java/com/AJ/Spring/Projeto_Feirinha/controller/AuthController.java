@@ -1,9 +1,6 @@
 package com.AJ.Spring.Projeto_Feirinha.controller;
 
-import com.AJ.Spring.Projeto_Feirinha.model.LoginRequest;
-import com.AJ.Spring.Projeto_Feirinha.model.LoginResponse;
 import com.AJ.Spring.Projeto_Feirinha.model.Usuario;
-import com.AJ.Spring.Projeto_Feirinha.repository.UsuarioRepository;
 import com.AJ.Spring.Projeto_Feirinha.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +16,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public Usuario registrar(@RequestBody Usuario usuario) {
-        return usuarioService.criarUsuario(usuario);
+    public ResponseEntity<Usuario> registrar(@RequestBody Usuario usuario) {
+        Usuario novoUsuario = usuarioService.criarUsuario(usuario);
+        return ResponseEntity.ok(novoUsuario);
     }
 }

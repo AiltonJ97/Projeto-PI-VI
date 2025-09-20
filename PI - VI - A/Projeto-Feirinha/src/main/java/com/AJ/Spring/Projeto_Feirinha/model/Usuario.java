@@ -69,9 +69,8 @@ public class Usuario {
         return senha;
     }
 
-    public static void setSenha(String senha) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        senha = encoder.encode(senha);
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public List<Notificacao> getNotificacoes() {
