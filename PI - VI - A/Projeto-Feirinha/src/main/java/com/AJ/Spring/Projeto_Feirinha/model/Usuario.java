@@ -1,6 +1,7 @@
 package com.AJ.Spring.Projeto_Feirinha.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class Usuario {
 
     private String nome;
     private String email;
-    private String senha;
+    private static String senha;
     private String perfil;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
@@ -64,8 +65,13 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public static String getSenha() {
+        return senha;
+    }
+
+    public static void setSenha(String senha) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        senha = encoder.encode(senha);
     }
 
     public List<Notificacao> getNotificacoes() {
