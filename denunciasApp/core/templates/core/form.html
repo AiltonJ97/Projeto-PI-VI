@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4 shadow">
+            <h3 class="mb-3">Relatar Incidente de Segurança</h3>
+
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary mt-3">Enviar Denúncia</button>
+            </form>
+            
+            <p class="text-muted mt-3">* Nome e e-mail são opcionais. Você pode denunciar anonimamente.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

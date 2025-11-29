@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4 shadow text-center">
+            <h3 class="text-success">Denúncia enviada com sucesso!</h3>
+
+            <p>Guarde este token para acompanhamento:</p>
+
+            <h4 class="fw-bold" id="token">{{ token }}</h4>
+
+            <a href="/status/" class="btn btn-primary mt-3">Consultar Status</a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Função para baixar token como TXT
+function baixarTXT(token) {
+    const blob = new Blob([`Token da denúncia:\n${token}`], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "meu_token.txt";
+    a.click();
+}
+
+// Função para solicitar e-mail e enviar o token
+async function enviarEmail(token) {
+    const email = prompt("Digite seu e-mail para receber o token:");
+
+    if (email === null || email.trim() === "") {
+        alert("E-mail não informado.");
+        return;
+    }
+
+    // Envia o token para o backend via fetch
+    const resposta = await fetch("/enviar-token-email/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({ token: token, email: email })
+    });
+
+    const retorno = await resposta.json();
+
+    if (retorno.status === "ok") {
+        alert("Token enviado para seu e-mail!");
+    } else {
+        alert("Erro ao enviar e-mail.");
+    }
+}
+
+// ALERTA AUTOMÁTICO APÓS A PÁGINA CARREGAR
+window.onload = function () {
+    const token = "{{ token }}";
+
+    const escolha = confirm(
+        "Deseja receber o token por e-mail?\n\n" +
+        "Clique em OK para enviar por e-mail.\n" +
+        "Clique em Cancelar para baixar como arquivo TXT."
+    );
+
+    if (escolha) {
+        enviarEmail(token);
+    } else {
+        baixarTXT(token);
+    }
+}
+</script>
+
+{% endblock %}

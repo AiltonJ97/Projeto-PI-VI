@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4 shadow">
+
+            <h3 class="mb-4">Consultar Status da Denúncia</h3>
+
+            <form method="GET">
+                <input type="text" name="token" class="form-control" placeholder="Insira o token" required>
+                <button class="btn btn-primary mt-3">Pesquisar</button>
+            </form>
+
+            {% if denuncia %}
+                <hr>
+                <h4>Resultado</h4>
+                <p><strong>Empresa:</strong> {{ denuncia.empresa }}</p>
+                <p><strong>Status:</strong> <span class="badge bg-info">{{ denuncia.get_status_display }}</span></p>
+                <p><strong>Descrição:</strong> {{ denuncia.descricao }}</p>
+                <p><strong>Registrado em:</strong> {{ denuncia.criado_em }}</p>
+
+            {% elif request.GET.token %}
+                <div class="alert alert-danger mt-3">Token não encontrado.</div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
